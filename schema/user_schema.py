@@ -8,3 +8,7 @@ class UserSchema(BaseModel):
     name: str
     username: str
     user_passw: str
+
+class userCredenciales(BaseModel):
+    username:str
+    user_passw:str
