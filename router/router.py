@@ -21,16 +21,17 @@ def root():
 def get_users():
     with engine.connect() as conn:
         result = conn.execute(users.select()).fetchall()
+        # json_objeto: UserSchema = json.dumps([dict(zip(('id', 'name', 'username', 'user_passw'), registro)) for registro in result])
 
-        return result
+        return json.loads(json.dumps([dict(zip(('id', 'name', 'username', 'user_passw'), registro)) for registro in result]))
 
 #1:03:30
 @user.get("/api/user/{user_is}", response_model=UserSchema)
-def get_user(user_is: str):
+def get_user(user_is: int):
     with engine.connect() as conn:
         result = conn.execute(users.select().where(users.c.id == user_is)).first()
 
-        return result
+        return {"id" : result[0],"name":result[1],"username":result[2],"user_passw":result[3]}
 
 
 @user.post("/api/user", status_code=HTTP_201_CREATED)
